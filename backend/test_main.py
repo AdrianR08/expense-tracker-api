@@ -6,6 +6,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.pool import StaticPool
 from database import Base, get_db
+from datetime import date
 
 
 test_engine = create_engine(
@@ -46,14 +47,15 @@ def test_health_check():
     assert response.json() == {"status": "healthy"}
 
 def test_create_expense():
-    expense_data = expense_data = {
+    expense_data = {
     "merchant": "Walmart",
     "amount": 200.00,
     "category": "Groceries"
 }
     response = client.post("/expenses", json=expense_data)
-    assert response.status_code == 200
+    assert response.status_code == 201
     created_expense = response.json()
+    assert created_expense["expense_date"] == date.today().isoformat()
     assert created_expense["merchant"] == expense_data["merchant"]
     assert created_expense["amount"] == expense_data["amount"]
     assert created_expense["category"] == expense_data["category"]
@@ -266,6 +268,202 @@ def test_delete_nonexistent_expense():
     error_data = delete_response.json()
     assert delete_response.status_code == 404
     assert error_data["detail"] == "Expense not found"
+
+def test_create_expense_with_data():
+    expense_data = {
+    "merchant": "Burger King",
+    "amount": 25.00,
+    "category": "Fast Food",
+    "expense_date": "2026-06-15"
+    }
+
+    create_response = client.post("/expenses", json=expense_data)
+    assert create_response.status_code == 201 
+    response_data = create_response.json()
+    assert response_data["expense_date"] == "2026-06-15"
+
+def test_create_expense_with_invalid_date():
+    expense_data = {
+    "merchant": "Burger King",
+    "amount": 25.00,
+    "category": "Fast Food",
+    "expense_date": "2026-13-40"
+    }
+
+    post_response = client.post("/expenses",json=expense_data)
+
+    post_data = post_response.json()
+    assert post_response.status_code == 422
+    assert post_data["detail"] is not None
+
+def test_get_expenses_by_date():
+    expense_one_data ={
+    "merchant": "Burger King",
+    "amount": 25.00,
+    "category": "Fast Food",
+    "expense_date": "2026-06-15"
+    }
+
+    expense_two_data = {
+    "merchant": "Popeyes",
+    "amount": 21.00,
+    "category": "Fast Food",
+    "expense_date": "2026-06-15"
+    }
+
+    expense_three_data = {
+    "merchant": "KFC",
+    "amount": 16.00,
+    "category": "Fast Food",
+    "expense_date": "2026-06-16"
+    }
+
+    first_post_response = client.post("/expenses",json=expense_one_data)
+    second_post_response = client.post("/expenses",json=expense_two_data)
+    second_post_response = client.post("/expenses",json=expense_three_data)
+
+    filtered_response = client.get("/expenses?expense_date=2026-06-15")
+
+    filtered_response_data = filtered_response.json()
+    
+    assert filtered_response.status_code == 200
+    assert len(filtered_response_data) == 2
+
+    assert all(
+        expenses["expense_date"] == "2026-06-15"
+       for expenses in filtered_response_data
+    )
+
+def test_expense_total_by_date():
+    expense_one_data ={
+    "merchant": "Burger King",
+    "amount": 25.00,
+    "category": "Fast Food",
+    "expense_date": "2026-06-15"
+    }
+
+    expense_two_data = {
+    "merchant": "Popeyes",
+    "amount": 21.00,
+    "category": "Fast Food",
+    "expense_date": "2026-06-15"
+    }
+
+    expense_three_data = {
+    "merchant": "KFC",
+    "amount": 16.00,
+    "category": "Fast Food",
+    "expense_date": "2026-06-16"
+    }
+    
+    first_post_response = client.post("/expenses",json=expense_one_data)
+    second_post_response = client.post("/expenses",json=expense_two_data)
+    third_post_response = client.post("/expenses",json=expense_three_data)
+
+    get_total_filtered = client.get("/expenses/total?expense_date=2026-06-15")
+
+    total_filtered_data = get_total_filtered.json()
+
+    assert get_total_filtered.status_code == 200
+    assert total_filtered_data["total"] == expense_one_data["amount"] + expense_two_data["amount"] 
+
+def test_expense_total_by_category_and_date():
+    expense_one_data ={
+    "merchant": "Burger King",
+    "amount": 25.00,
+    "category": "Fast Food",
+    "expense_date": "2026-06-15"
+    }
+
+    expense_two_data = {
+    "merchant": "Walmart",
+    "amount": 150.00,
+    "category": "Groceries",
+    "expense_date": "2026-06-16"
+    }
+
+    expense_three_data = {
+    "merchant": "Popeyes",
+    "amount": 21.00,
+    "category": "Fast Food",
+    "expense_date": "2026-06-15"
+    }
+
+    first_post_response = client.post("/expenses",json=expense_one_data)
+    second_post_response = client.post("/expenses",json=expense_two_data)
+    third_post_response = client.post("/expenses",json=expense_three_data)
+
+    get_total_filtered_category_date = client.get("/expenses/total?category=Fast Food&expense_date=2026-06-15")
+
+    total_filtered_category_date = get_total_filtered_category_date.json()
+
+    assert get_total_filtered_category_date.status_code == 200
+    assert total_filtered_category_date["total"] == expense_one_data["amount"] + expense_three_data["amount"]
+    
+def test_get_expenses_by_category_and_date():
+    expense_one_data ={
+    "merchant": "Burger King",
+    "amount": 25.00,
+    "category": "Fast Food",
+    "expense_date": "2026-06-15"
+    }
+
+    expense_two_data = {
+    "merchant": "Chick Fil A",
+    "amount": 16.50,
+    "category": "Fast Food",
+    "expense_date": "2026-06-16"
+    }
+
+    expense_three_data = {
+    "merchant": "Popeyes",
+    "amount": 21.00,
+    "category": "Fast Food",
+    "expense_date": "2026-06-15"
+    }
+
+    expense_four_data = {
+    "merchant": "Taco Bell",
+    "amount": 15.00,
+    "category": "Fast Food",
+    "expense_date": "2026-06-15"
+    }
+
+    expense_five_data = {
+    "merchant": "Walmart",
+    "amount": 150.00,
+    "category": "Groceries",
+    "expense_date": "2026-06-15"
+    }
+
+    first_post_response = client.post("/expenses",json=expense_one_data)
+    second_post_response = client.post("/expenses",json=expense_two_data)
+    third_post_response = client.post("/expenses",json=expense_three_data)
+    fourth_post_response = client.post("/expenses",json=expense_four_data)
+    fifth_post_response = client.post("/expenses",json=expense_five_data)
+
+    get_response = client.get("/expenses?category=fast food&expense_date=2026-06-15")
+
+    get_filtered_data_by_date_and_category = get_response.json()
+
+    assert get_response.status_code == 200
+    assert len(get_filtered_data_by_date_and_category) == 3
+    assert all(
+        expense["expense_date"] == "2026-06-15" and expense["category"].lower() == "fast food"
+        for expense in get_filtered_data_by_date_and_category
+    )
+
+    
+
+
+
+
+
+    
+
+
+
+
 
 
 
