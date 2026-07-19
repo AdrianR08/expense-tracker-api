@@ -4,7 +4,6 @@ import pytest
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.pool import StaticPool
-
 from database import Base, get_db
 
 test_engine = create_engine(
@@ -31,6 +30,12 @@ def override_get_db():
 app.dependency_overrides[get_db] = override_get_db
 
 client = TestClient(app)
+
+
+@pytest.fixture(autouse=True)
+def reset_database():
+    Base.metadata.drop_all(bind=test_engine)
+    Base.metadata.create_all(bind=test_engine)
 
 def test_health_check():
     response = client.get("/health")
@@ -62,3 +67,19 @@ def test_create_expense_with_negative_amount():
     assert response.status_code == 422
     error_data = response.json()
     assert "detail" in error_data
+
+def test_get_expenses():
+    expense_data = {
+    "merchant": "Burger King",
+    "amount": 25.00,
+    "category": "Fast Food"
+    }
+     
+    post_response = client.post("/expenses",json=expense_data )
+    get_response = client.get("/expenses")
+    assert get_response.status_code == 200
+    returned_expenses = get_response.json()
+    assert len(returned_expenses) == 1
+
+def test_get_one_expense():
+    response = client
