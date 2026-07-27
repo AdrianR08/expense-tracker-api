@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
 .expense-merchant {
   display: flex;
   font-weight: 600;
@@ -74,6 +76,14 @@
   margin-bottom: 10px;
 }
 
+.expense-overview-header {
+  display: flex;
+  justify-self: start;
+  text-align: left;
+  margin-bottom: 10px;
+  flex: 1;
+}
+
 .expense-info {
   display: flex;
   justify-content: space-between;
@@ -105,6 +115,7 @@
   flex-direction: column;
   box-shadow: -10px 10px 4px 0 rgba(0, 0, 0, 0.2);
   min-width: 260px;
+  min-height: 400px;
 }
 
 .expenses-lists {
@@ -292,6 +303,7 @@ select {
 
 body {
   background-color: #091019;
+  font-family: "Inter", sans-serif;
 }
 
 .button-nav {
@@ -321,4 +333,145 @@ body {
 .button-nav:hover .nav-icon {
   background-color: #131C2A;
   color: #118C4F
+}
+
+.chart-card {
+  flex-direction: row;
+  display: flex;
+  background-color: #0E1722;
+  gap: 15px;
+  padding: 30px 30px 30px 30px;
+  border-radius: 30px;
+  width: auto;
+  height: 500px;
+  margin-top: 20px;
+  margin-left: 20px;
+  margin-bottom: 20px;
+  margin-right: 20px;
+  flex: 1;
+  height: 500px;
+}
+
+.overview {
+  padding: 20px;
+  border: 1px solid #263449;
+  border-radius: 16px;
+  background: #111c2c;
+  box-shadow: -10px 10px 4px 0 rgba(0, 0, 0, 0.2);
+  margin: 20px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 320px;
+
+}
+
+.legend-row {
+  display: grid;
+  grid-template-columns: 15px 100fr 80px;
+  width: 100%;
+}
+
+.donut-container {
+  width: 50%;
+}
+
+.overview-content {
+  display: flex;
+  align-items: center;
+}
+
+.legend-row span:first-child {
+  width: 10px;
+}
+
+.legend-row span:nth-child(2) {
+  text-align: left;
+  white-space: nowrap;
+}
+
+.legend-row span:nth-child(3) {
+  text-align: right;
+  align-content: center;
+
+}
+
+.text-chart {
+  color: white;
+}
+
+.legend-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  color: white;
+}
+
+.overview-top {
+  display: flex;
+}
+
+.select-menu-overview {
+  background-color: #14212F;
+  border-style: none;
+  outline: solid;
+  outline-color: rgb(255, 255, 255, 25%);
+  border-radius: 5px;
+  outline-width: 1px;
+  padding: 5px;
+  color: rgb(255, 255, 255, 50%);
+}
+
+.no-items {
+  margin: auto 0;
+  text-align: center;
+  width: 100%;
+}
+
+.summary-section {
+  flex-direction: row;
+  display: flex;
+  background-color: #0E1722;
+  gap: 15px;
+  padding: 30px 30px 30px 30px;
+  border-radius: 30px;
+  width: auto;
+  height: 500px;
+  margin-top: 20px;
+  margin-left: 20px;
+  margin-bottom: 20px;
+  margin-right: 20px;
+  flex: 1;
+  height: 500px;
+}
+
+.total-expenses {
+  display: flex;
+  text-align: left;
+  row-gap: 10px;
+  width: fit-content;
+  white-space: nowrap;
+}
+
+.text-main-card {
+  font-weight: bold;
+  color: white;
+  font-size: 25px;
+}
+
+.wallet-icon {
+  display: flex;
+  background-color: #1D5639;
+  width: fit-content;
+  padding: 5px;
+  border-radius: 8px;
+}
+
+.color-category {
+  height: 100%;
+  aspect-ratio: 1 / 1;
+  display: flex;
+  align-self: center;
+  border-radius: 100%;
+  
 }
