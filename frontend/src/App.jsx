@@ -1,6 +1,6 @@
 import './App.css'
 import { useEffect, useState } from 'react'
-import { House, Coins, BookCopy, Scroll, Settings, Wallet } from 'lucide-react';
+import { House, Coins, BookCopy, Scroll, Settings, Wallet,FileText } from 'lucide-react';
 import {
   PieChart,
   Pie,
@@ -172,7 +172,7 @@ function App() {
       expense_date,
     }
 
-    const response = await fetch('http://127.0.0.1:8000/expenses', {
+    const response = await fetch('/api/expenses', {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -193,7 +193,7 @@ function App() {
   }
 
   useEffect(() => {
-    fetch('http://127.0.0.1:8000/expenses')
+    fetch('/api/expenses')
       .then((response) => response.json())
       .then((data) => setExpenses(data))
   }, [])
@@ -309,8 +309,8 @@ function App() {
 
           <section className='summary-section'>
             <div className='expense-card total-expenses'>
-              <div className='wallet-icon'>
-                <Wallet stroke='lightgreen' size={30} />
+              <div className='summary-icon wallet-icon'>
+                <Wallet size={30} />
               </div>
               <text>Total Expenses</text>
               <text className='text-main-card'>${sumAmount.toFixed(2)}</text>
@@ -318,6 +318,7 @@ function App() {
             </div>
 
             <div className='expense-card average-day'>
+            <div className='summary-icon'></div>
 
             </div>
 

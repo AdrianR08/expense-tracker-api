@@ -458,13 +458,26 @@ body {
   font-size: 25px;
 }
 
-.wallet-icon {
+
+.summary-icon {
   display: flex;
-  background-color: #1D5639;
-  width: fit-content;
-  padding: 5px;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
   border-radius: 8px;
+  flex-shrink: 0;
+  align-self: flex-start;
 }
+
+.wallet-icon {
+  background-color: #1D5639;
+  color: #35D07F;
+}
+
+
+
+
 
 .color-category {
   height: 20px;
