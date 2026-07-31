@@ -48,7 +48,6 @@
   background: #111c2c;
   box-shadow: -10px 10px 4px 0 rgba(0, 0, 0, 0.2);
   width: 100%;
-
   display: flex;
   flex-direction: column;
 }
@@ -476,8 +475,15 @@ body {
 }
 
 
+.file-icon {
+  background-color: #0E4C92;
+  color: #90D5FF;
+}
 
-
+.tag-icon {
+  background-color: #7D007D;
+  color: #FF26FF;
+}
 
 .color-category {
   height: 20px;
@@ -486,3 +492,20 @@ body {
   align-self: center;
   border-radius: 100%;
 }
+
+.average-day {
+  display: flex;
+  text-align: left;
+  row-gap: 10px;
+  width: fit-content;
+  white-space: nowrap;
+}
+
+.top-category {
+  display: flex;
+  text-align: left;
+  row-gap: 10px;
+  width: fit-content;
+  white-space: nowrap;
+}
+

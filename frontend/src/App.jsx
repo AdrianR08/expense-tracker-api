@@ -1,6 +1,6 @@
 import './App.css'
 import { useEffect, useState } from 'react'
-import { House, Coins, BookCopy, Scroll, Settings, Wallet,FileText } from 'lucide-react';
+import { House, Coins, BookCopy, Scroll, Settings, Wallet, FileText, Tag } from 'lucide-react';
 import {
   PieChart,
   Pie,
@@ -216,22 +216,48 @@ function App() {
   })
 
 
-  let allExpenses = expenses
+  let monthExpenses = {}
 
-  allExpenses = expenses.filter((expense) => {
+  monthExpenses = expenses.filter((expense) => {
     const expenseDate = new Date(`${expense.expense_date}T00:00:00`)
+    const lastMonth = new Date(localDate)
+    lastMonth.setMonth(localDate.getMonth() - 1)
     return (
-      expenseDate.getFullYear() === localDate.getFullYear()
+      expenseDate.getMonth() === localDate.getMonth()
     )
   }
   )
 
-  let sumAmount = 0
+  let sumAmountMonth = 0
 
-  allExpenses.forEach((expense) => {
-    sumAmount += expense.amount
-  }
-  )
+  let categoryListAmount = {}
+
+  monthExpenses.forEach((expense) => {
+    sumAmountMonth += expense.amount
+
+    if (Object.hasOwn(categoryListAmount, expense.category)) {
+      categoryListAmount[expense.category] += expense.amount
+    } else categoryListAmount[expense.category] = expense.amount
+  })
+
+  let topCategory = ""
+  let topCategoryAmount = 0
+
+  Object.keys(categoryListAmount).forEach((category, index) => {
+    if (categoryListAmount[category] >= topCategoryAmount) {
+      let keys = Object.keys(categoryListAmount)
+      console.log(keys)
+
+    }
+    topCategory = keys[index]
+  })
+
+  console.log(topCategory)
+  console.log(topCategoryAmount)
+
+  let averagePerDay = sumAmountMonth / monthExpenses.length
+
+
 
 
   const chartData = Object.entries(categoryTotals).map((entry) => {
@@ -270,16 +296,17 @@ function App() {
       <div>
         {chartData.map((item, index) => (
           <div key={index} className="legend-row">
-            <span className='color-category' style={{ backgroundColor: categoryColors[chartData[index].category]
+            <span className='color-category' style={{
+              backgroundColor: categoryColors[chartData[index].category]
             }}></span>
             <span>{chartData[index].category}</span>
             <span>${chartData[index].amount.toFixed(2)}</span>
           </div>
-          
+
         ))}
       </div>
     )
-   
+
   }
 
 
@@ -308,22 +335,32 @@ function App() {
           </div>
 
           <section className='summary-section'>
+
             <div className='expense-card total-expenses'>
               <div className='summary-icon wallet-icon'>
                 <Wallet size={30} />
               </div>
               <text>Total Expenses</text>
-              <text className='text-main-card'>${sumAmount.toFixed(2)}</text>
+              <text className='text-main-card'>${sumAmountMonth.toFixed(2)}</text>
               <text>This month</text>
             </div>
 
             <div className='expense-card average-day'>
-            <div className='summary-icon'></div>
-
+              <div className='summary-icon file-icon'>
+                <FileText size={30} />
+              </div>
+              <text>Avgerage Per Day</text>
+              <text className='text-main-card'>{averagePerDay.toFixed(2)}</text>
+              <text>This month</text>
             </div>
 
             <div className='expense-card top-category'>
-
+              <div className='summary-icon tag-icon'>
+                <Tag size={30} />
+              </div>
+              <text>Top Category</text>
+              <text className='text-main-card'>{ }</text>
+              <text>This month</text>
             </div>
 
             <div className='expense-card transctions'>
