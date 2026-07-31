@@ -1,6 +1,6 @@
 import './App.css'
 import { useEffect, useState } from 'react'
-import { House, Coins, BookCopy, Scroll, Settings, Wallet, FileText, Tag } from 'lucide-react';
+import { House, Coins, BookCopy, Scroll, Settings, Wallet, FileText, Tag, TrendingUp } from 'lucide-react';
 import {
   PieChart,
   Pie,
@@ -241,19 +241,20 @@ function App() {
   })
 
   let topCategory = ""
-  let topCategoryAmount = 0
+  let listAmount = Object.values(categoryListAmount)
+
+  let topCategoryAmount = listAmount[0]
 
   Object.keys(categoryListAmount).forEach((category, index) => {
+    console.log(categoryListAmount)
     if (categoryListAmount[category] >= topCategoryAmount) {
       let keys = Object.keys(categoryListAmount)
-      console.log(keys)
+      topCategory = keys[index]
 
+      console.log(categoryListAmount[category])
     }
-    topCategory = keys[index]
   })
 
-  console.log(topCategory)
-  console.log(topCategoryAmount)
 
   let averagePerDay = sumAmountMonth / monthExpenses.length
 
@@ -359,11 +360,13 @@ function App() {
                 <Tag size={30} />
               </div>
               <text>Top Category</text>
-              <text className='text-main-card'>{ }</text>
+              <text className='text-main-card'>{topCategory}</text>
               <text>This month</text>
             </div>
 
             <div className='expense-card transctions'>
+
+              <TrendingUp />
 
             </div>
 
