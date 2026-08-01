@@ -2,14 +2,9 @@
 
 .expense-merchant {
   display: flex;
+  width: 100%;
   font-weight: 600;
   color: white;
-}
-
-.expense-category {
-  font-size: 0.9rem;
-  justify-content: center;
-  opacity: 0.7;
 }
 
 .expense-amount {
@@ -17,29 +12,19 @@
   color: aliceblue;
   font-weight: 700;
   font-size: 1.05rem;
-  float: right;
-}
-
-.expense-item {
-  display: flex;
-  justify-content: space-between;
-  border-bottom: 1px solid #263449;
-  padding: 16px 0;
   align-items: center;
+  width: 100%;
+  margin-left: auto;
+  justify-content: right;
 }
-
 
 .expense-date {
   font-size: 0.8rem;
   opacity: 0.7;
+  white-space: nowrap;
+  margin-right: 15px;
 }
 
-.expense-details {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-
-}
 
 .expense-card {
   padding: 20px;
@@ -48,17 +33,59 @@
   background: #111c2c;
   box-shadow: -10px 10px 4px 0 rgba(0, 0, 0, 0.2);
   width: 100%;
+  height: fit-content;
   display: flex;
   flex-direction: column;
 }
 
+
+
 .expense-card ul {
   list-style: none;
   padding: 0;
-  margin: 0;
+  margin: none;
 }
 
+.expense-card ul:last-child {
+  list-style: none;
+  padding: 0;
+  margin-bottom: 5px;
+}
 
+.expense-item {
+  display: flex;
+  width: 100%;
+  border-bottom: solid;
+  border-color: rgb(255, 255, 255,10%);
+  border-width: 1px;
+  margin-bottom: 15px;
+}
+
+.merchant-category-date {
+  width: fit-content;
+}
+
+.delete-button {
+  display: flex;
+  margin-left: auto;
+  align-items: center;
+  color: red;
+  border: none;
+  background-color: transparent;
+}
+
+.expense-details {
+  display: block;
+  width: fit-content;
+  margin-right: 30px;
+}
+
+.expense-info {
+  display: flex;
+  width: fit-content;
+  gap: 5px;
+
+}
 
 .expense-item:last-child {
   border-bottom: none;
@@ -66,6 +93,10 @@
 
 .expense-item:first-child {
   border-top: none;
+}
+
+.expense-category {
+  white-space: nowrap;
 }
 
 .expense-card-header {
@@ -83,11 +114,7 @@
   flex: 1;
 }
 
-.expense-info {
-  display: flex;
-  justify-content: space-between;
-  gap: 10px;
-}
+
 
 .expense-card-button {
   background-color: #111C2A;
@@ -125,13 +152,9 @@
   padding: 30px 30px 30px 30px;
   border-radius: 30px;
   width: auto;
-  height: 500px;
-  margin-top: 20px;
-  margin-left: 20px;
-  margin-bottom: 20px;
-  margin-right: 20px;
+  margin: 10px;
   flex: 1;
-  height: 500px;
+  height: fit-content;
 }
 
 .add-merchant-item {
@@ -343,10 +366,7 @@ body {
   border-radius: 30px;
   width: auto;
   height: 500px;
-  margin-top: 20px;
-  margin-left: 20px;
-  margin-bottom: 20px;
-  margin-right: 20px;
+  margin: 10px;
   flex: 1;
   height: 500px;
 }
@@ -372,6 +392,7 @@ body {
   column-gap: 40px;
 }
 
+
 .donut-container {
   width: 50%;
 }
@@ -379,13 +400,19 @@ body {
 .overview-content {
   display: flex;
   align-items: center;
+  height: 380px;
 }
+
 
 .legend-row span:nth-child(2) {
   text-align: left;
   white-space: nowrap;
   align-content: center;
 
+}
+
+span {
+  margin: 10px;
 }
 
 .legend-row span:nth-child(3) {
@@ -435,12 +462,8 @@ body {
   border-radius: 30px;
   width: auto;
   height: 500px;
-  margin-top: 20px;
-  margin-left: 20px;
-  margin-bottom: 20px;
-  margin-right: 20px;
+  margin: 10px;
   flex: 1;
-  height: 500px;
 }
 
 .total-expenses {
@@ -448,7 +471,6 @@ body {
   text-align: left;
   row-gap: 10px;
   width: fit-content;
-  white-space: nowrap;
 }
 
 .text-main-card {
@@ -498,7 +520,7 @@ body {
   text-align: left;
   row-gap: 10px;
   width: fit-content;
-  white-space: nowrap;
+
 }
 
 .top-category {
@@ -506,6 +528,28 @@ body {
   text-align: left;
   row-gap: 10px;
   width: fit-content;
-  white-space: nowrap;
 }
 
+.transactions {
+  display: flex;
+  text-align: left;
+  row-gap: 10px;
+  width: fit-content;
+}
+
+.trend-icon {
+  background-color: #FFA500;
+  color: #FFD54A;
+}
+
+.summary-cards {
+  padding: 20px;
+  border: 1px solid #263449;
+  border-radius: 16px;
+  background: #111c2c;
+  box-shadow: -10px 10px 4px 0 rgba(0, 0, 0, 0.2);
+  width: calc(100%/5);
+  height: 175px;
+  display: flex;
+  flex-direction: column;
+}

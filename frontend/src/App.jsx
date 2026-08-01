@@ -1,6 +1,6 @@
 import './App.css'
 import { useEffect, useState } from 'react'
-import { House, Coins, BookCopy, Scroll, Settings, Wallet, FileText, Tag, TrendingUp } from 'lucide-react';
+import { House, Coins, BookCopy, Scroll, Settings, Wallet, FileText, Tag, TrendingUp, X } from 'lucide-react';
 import {
   PieChart,
   Pie,
@@ -180,6 +180,12 @@ function App() {
       body: JSON.stringify(newExpense)
     })
 
+    if (!response.ok) {
+      const errorText = await response.text()
+      console.error(errorText)
+      return
+    }
+
     if (response.ok) {
       setMerchant('')
       setCategory('')
@@ -270,7 +276,6 @@ function App() {
     return categoryAmount
   })
 
-
   const categoryColors = {
     Housing: '#4F8CFF',
     Transportation: '#FFB347',
@@ -337,16 +342,16 @@ function App() {
 
           <section className='summary-section'>
 
-            <div className='expense-card total-expenses'>
+            <div className='summary-cards total-expenses'>
               <div className='summary-icon wallet-icon'>
                 <Wallet size={30} />
               </div>
-              <text>Total Expenses</text>
+              <text>Total<br />Expenses</text>
               <text className='text-main-card'>${sumAmountMonth.toFixed(2)}</text>
               <text>This month</text>
             </div>
 
-            <div className='expense-card average-day'>
+            <div className='summary-cards average-day'>
               <div className='summary-icon file-icon'>
                 <FileText size={30} />
               </div>
@@ -355,19 +360,24 @@ function App() {
               <text>This month</text>
             </div>
 
-            <div className='expense-card top-category'>
+            <div className='summary-cards top-category'>
               <div className='summary-icon tag-icon'>
                 <Tag size={30} />
               </div>
-              <text>Top Category</text>
+              <text>Top<br />Category</text>
+
               <text className='text-main-card'>{topCategory}</text>
               <text>This month</text>
             </div>
 
-            <div className='expense-card transctions'>
 
-              <TrendingUp />
-
+            <div className='summary-cards transactions'>
+              <div className='summary-icon trend-icon'>
+                <TrendingUp size={30} />
+              </div>
+              <text>Total Transactions</text>
+              <text className='text-main-card'>{monthExpenses.length}</text>
+              <text>This month</text>
             </div>
 
 
@@ -377,7 +387,7 @@ function App() {
           <section className='chart-card'>
             <div className='overview'>
               <div className='overview-top'>
-                <h2 className="expense-overview-header">Overview</h2>
+                <h2 className="expense-overview-header">Spending Overview</h2>
                 <select className='select-menu-overview' value={overviewPeriod}
                   onChange={(e) => setOverviewPeriod(e.target.value)}>
                   <option value='thisMonth'>This Month</option>
@@ -400,27 +410,30 @@ function App() {
 
               <div className='list-items'>
                 <ul>
-                  {[...expenses].sort((a, b) => new Date(b.expense_date) - new Date(a.expense_date)).slice(0, 4).map((expense) => (
+                  {[...expenses].sort((a, b) => new Date(b.expense_date) - new Date(a.expense_date)).slice(0, 5).map((expense) => (
                     <li className="expense-item" key={expense.id}>
                       <div className="expense-details">
-                        <div className="expense-merchant">{expense.merchant}</div>
-                        <div className="expense-info">
-                          <div className="expense-category">{expense.category}</div>
-                          <p>•</p>
-                          <div className="expense-date">{new Date(`${expense.expense_date}T00:00:00`).toLocaleDateString(
-                            "en-US",
-                            {
-                              month: "long",
-                              day: "numeric",
-                              year: "numeric",
-                            }
-                          )}
+                        <div className='merchant-category-date'>
+                          <div className="expense-merchant">{expense.merchant}</div>
+                          <div className="expense-info">
+                            <div className="expense-category">{expense.category}</div>
+                            <p>•</p>
+                            <div className="expense-date">{new Date(`${expense.expense_date}T00:00:00`).toLocaleDateString(
+                              "en-US",
+                              {
+                                month: "long",
+                                day: "numeric",
+                                year: "numeric",
+                              }
+                            )}
+                            </div>
                           </div>
                         </div>
                       </div>
                       <div className="expense-amount">
                         ${expense.amount.toFixed(2)}
                       </div>
+                      <button className='delete-button'><X /></button>
                     </li>
                   ))}
                 </ul>
