@@ -73,6 +73,10 @@
   border: none;
   background-color: transparent;
 }
+.delete-button:hover {
+  opacity: 50%;
+
+}
 
 .expense-details {
   display: block;

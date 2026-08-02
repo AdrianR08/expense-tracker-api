@@ -31,6 +31,8 @@ function App() {
 
   const [overviewPeriod, setOverviewPeriod] = useState('thisMonth')
 
+
+
   let filteredExpenses = expenses
 
   if (overviewPeriod === 'thisMonth') {
@@ -57,6 +59,8 @@ function App() {
     }
     )
   }
+
+
 
   if (overviewPeriod === 'lastThreeMonth') {
 
@@ -172,6 +176,8 @@ function App() {
       expense_date,
     }
 
+
+
     const response = await fetch('/api/expenses', {
       method: "POST",
       headers: {
@@ -179,6 +185,8 @@ function App() {
       },
       body: JSON.stringify(newExpense)
     })
+
+
 
     if (!response.ok) {
       const errorText = await response.text()
@@ -196,6 +204,18 @@ function App() {
     const createdExpenses = await response.json()
 
     setExpenses([createdExpenses, ...expenses])
+  }
+
+  async function deleteExpense(id) {
+    const response = await fetch(`/api/expenses/${id}`, {
+      method: 'DELETE'
+    })
+
+    setExpenses((currentExpenses) =>
+
+      currentExpenses.filter((expense) => expense.id !== id)
+
+    )
   }
 
   useEffect(() => {
@@ -246,7 +266,7 @@ function App() {
     } else categoryListAmount[expense.category] = expense.amount
   })
 
-  let topCategory = ""
+  let topCategory = "None"
   let listAmount = Object.values(categoryListAmount)
 
   let topCategoryAmount = listAmount[0]
@@ -355,7 +375,7 @@ function App() {
               <div className='summary-icon file-icon'>
                 <FileText size={30} />
               </div>
-              <text>Avgerage Per Day</text>
+              <text>Avgerage<br />Per Day</text>
               <text className='text-main-card'>{averagePerDay.toFixed(2)}</text>
               <text>This month</text>
             </div>
@@ -433,7 +453,7 @@ function App() {
                       <div className="expense-amount">
                         ${expense.amount.toFixed(2)}
                       </div>
-                      <button className='delete-button'><X /></button>
+                      <button className='delete-button' onClick={() => deleteExpense(expense.id)}><X /></button>
                     </li>
                   ))}
                 </ul>
